@@ -21,7 +21,7 @@ default = {}
 default["model"] = config["OpenAI"].get("MODEL", "gpt-4")
 default["max_tokens"] = int(config["OpenAI"].get("MAX_TOKENS", "1024"))
 default["temperature"] = float(config["OpenAI"].get("TEMPERATURE", "0.3"))
-default["top_p"] = int(config["OpenAI"].get("TOP_P", "0"))
+default["top_p"] = float(config["OpenAI"].get("TOP_P", "0.01"))
 default["frequency_penalty"] = float(config["OpenAI"].get("FREQ_PENALTY", "0.0"))
 default["presence_penalty"] = float(
     config["OpenAI"].get("PRESENCE_PENALTY", "0.0"))
@@ -106,7 +106,7 @@ class OpenAIClient:
         """
         Sets up the OpenAI API configurations for this client.
         """
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        self.client = OpenAI(base_url=os.getenv("OPENAI_URL"), api_key=os.getenv("OPENAI_API_KEY"))
 
     def send_message(self,
                     current_messages,
@@ -275,6 +275,7 @@ class OpenAIClient:
                 "gpt-4-32k-0314",
                 "gpt-4-0613",
                 "gpt-4-32k-0613",
+                "deepseek-chat",
                 }:
                 tokens_per_message = 3
                 tokens_per_name = 1
